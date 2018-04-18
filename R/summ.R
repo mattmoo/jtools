@@ -2233,6 +2233,17 @@ summ.default <- function(model, scale = FALSE, vifs = FALSE,
   t <- suppressWarnings(try({coefs <-
     broom::tidy(model, conf.int = confint, conf.level = ci.width)},
     silent = TRUE))
+  
+  #Modified to accept quantreg rq
+  if (class(model) == 'rq') {
+    qrCoefMat = summary(model, se="boot")$coefficients
+    
+    qrCoefDF = data.frame(qrCoefMat)
+    qrCoefDF = cbind(term = rownames(qrCoefDF), qrCoefDF)
+    rownames(qrCoefDF) = paste0(seq(1:nrow(qrCoefDF)))
+    colnames(qrCoefDF) = c("term","estimate","std.error","statistic","p.value")
+    coefs = merge(t,qrCoefDF)
+  }
 
   if ("try-error" %nin% class(t)) {
     # Checking that broom can get the right info
