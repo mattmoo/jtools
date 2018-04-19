@@ -2572,6 +2572,9 @@ print.summ.default <- function(x, ...) {
     if (!is.null(x$dv)) {
       cat("Dependent Variable: ", x$dv, "\n", sep = "")
     }
+    if (!is.null(x$tau)) {
+      cat("Tau: ", x$tau, "\n", sep = "")
+    }
     cat("Model type:", x$mod_class[1], "\n")
   }
 
